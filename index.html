@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>天天向上专用——基金收益计算器</title>
-    <script src="https://unpkg.com/webdav@5.3.0/dist/webdav.min.js"></script>
-    <!-- 新增：webdav 库 -->
-    <script src="https://cdn.jsdelivr.net/npm/webdav@5.3.0/web/lib/webdav.min.js">
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js">
     </script>
+    <!-- ===== 已移除 webdav 库，改用原生 fetch ===== -->
     <style>
-        /* ===== 基础样式（仅调整头部与提醒栏高度） ===== */
+        /* ===== 基础样式（与上一版完全相同） ===== */
         * {
             margin: 0;
             padding: 0;
@@ -36,18 +35,18 @@
         }
         .header {
             text-align: center;
-            margin-bottom: 4px;      /* 原 8px */
-            padding-bottom: 3px;     /* 原 6px */
+            margin-bottom: 4px;
+            padding-bottom: 3px;
             border-bottom: 2px solid #f0f4fe;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 4px;               /* 原 6px */
+            gap: 4px;
             position: relative;
         }
         .header .brand {
-            font-size: 8px;          /* 原 9px */
+            font-size: 8px;
             font-weight: 700;
             letter-spacing: 2px;
             color: #f6b83d;
@@ -59,10 +58,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;               /* 原 8px */
+            gap: 6px;
         }
         .header h1 {
-            font-size: 14px;         /* 原 16px */
+            font-size: 14px;
             font-weight: 800;
             color: #1a2634;
             letter-spacing: 0.5px;
@@ -70,7 +69,7 @@
             display: inline-block;
         }
         .header .dev-credit {
-            font-size: 9px;          /* 原 10px */
+            font-size: 9px;
             color: #aabbcc;
             margin-top: 0;
             letter-spacing: 2px;
@@ -81,12 +80,12 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 28px;             /* 原 32px */
+            width: 28px;
             height: 28px;
             border-radius: 50%;
             background: #4A90D9;
             color: #fff;
-            font-size: 15px;         /* 原 18px */
+            font-size: 15px;
             font-weight: 700;
             border: none;
             cursor: pointer;
@@ -110,20 +109,20 @@
 
         .alert-bar {
             text-align: center;
-            font-size: 12px;         /* 原 13px */
+            font-size: 12px;
             font-weight: 700;
-            padding: 2px 0;          /* 原 4px 0 */
-            margin-bottom: 4px;      /* 原 8px */
+            padding: 2px 0;
+            margin-bottom: 4px;
             border-radius: 8px;
             background: transparent;
             color: #c0392b;
-            min-height: 20px;        /* 原 24px */
+            min-height: 20px;
             transition: all 0.2s;
         }
         .alert-bar.has-alert {
             background: #fce8e6;
             border: 1px solid #f5c6cb;
-            padding: 2px 8px;        /* 原 4px 8px */
+            padding: 2px 8px;
         }
         .alert-bar.no-alert {
             background: transparent;
@@ -851,7 +850,7 @@
             color: #4A90D9;
         }
 
-        /* ===== 移动端适配（同步微调） ===== */
+        /* ===== 移动端适配 ===== */
         @media (max-width: 440px) {
             body {
                 padding: 8px;
@@ -861,7 +860,7 @@
                 border-radius: 20px;
             }
             .header h1 {
-                font-size: 13px; /* 原14px再微调 */
+                font-size: 13px;
             }
             .header .brand {
                 font-size: 7px;
@@ -1229,7 +1228,7 @@
             <input type="file" id="importFileInput" accept=".json" style="display:none;">
         </div>
 
-        <!-- ===== 新增：坚果云同步区域 ===== -->
+        <!-- ===== 新增：坚果云同步区域（使用原生 fetch） ===== -->
         <div style="margin-top: 8px; border-top: 2px solid #eef2f9; padding-top: 8px;">
             <details style="font-size: 12px; color: #5a6e8a;">
                 <summary style="font-weight: 600; cursor: pointer; color: #4A90D9;">☁️ 坚果云同步设置（点击展开）</summary>
@@ -1424,7 +1423,7 @@
         const TRADE_TYPE_KEY = 'trade_type_preference';
         const VISIBLE_COLUMNS_KEY = 'fund_visible_columns';
         const TUTORIAL_SHOWN_KEY = 'fund_tutorial_shown';
-        const WEBDAV_CONFIG_KEY = 'fund_webdav_config'; // 新增
+        const WEBDAV_CONFIG_KEY = 'fund_webdav_config';
 
         // ============================================================
         // 列可见性配置
@@ -2979,7 +2978,7 @@
         }
 
         // ============================================================
-        // ===== 新增：坚果云 WebDAV 动态配置与同步 =====
+        // ===== 新增：坚果云 WebDAV（原生 fetch 实现） =====
         // ============================================================
         const REMOTE_FILE_PATH = 'fund_data.json';
 
@@ -3007,21 +3006,78 @@
             localStorage.removeItem(WEBDAV_CONFIG_KEY);
         }
 
-   function getWebdavClient() {
-    const config = loadWebdavConfig();
-    if (!config) return null;
-    try {
-        // 将 window.WebDAV 改为 window.webdav（全小写）
-        const client = window.webdav.createClient('https://dav.jianguoyun.com/dav/', {
-            username: config.email,
-            password: config.password
-        });
-        return client;
-    } catch (e) {
-        console.error('WebDAV 客户端创建失败:', e);
-        return null;
-    }
-}
+        // ---------- 核心：使用原生 fetch 实现 WebDAV 操作 ----------
+        function getWebdavClient() {
+            const config = loadWebdavConfig();
+            if (!config) return null;
+
+            // 生成 Basic Auth 头
+            const credentials = btoa(`${config.email}:${config.password}`);
+            const headers = {
+                'Authorization': `Basic ${credentials}`,
+                'Content-Type': 'application/octet-stream'
+            };
+
+            // 返回一个包含三个方法的对象
+            return {
+                // 检查文件是否存在（PROPFIND）
+                stat: async function(path) {
+                    const url = `https://dav.jianguoyun.com/dav/${path}`;
+                    const response = await fetch(url, {
+                        method: 'PROPFIND',
+                        headers: {
+                            ...headers,
+                            'Depth': '0'
+                        }
+                    });
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    return response; // 返回 response 对象，调用者可自行解析，但我们只需要状态码，此处只抛异常即可
+                },
+                // 读取文件内容（GET）
+                getFileContents: async function(path) {
+                    const url = `https://dav.jianguoyun.com/dav/${path}`;
+                    const response = await fetch(url, {
+                        method: 'GET',
+                        headers: headers
+                    });
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    return await response.text();
+                },
+                // 上传文件（PUT）
+                putFileContents: async function(path, content, options = {}) {
+                    const url = `https://dav.jianguoyun.com/dav/${path}`;
+                    const response = await fetch(url, {
+                        method: 'PUT',
+                        headers: headers,
+                        body: content
+                    });
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    return response;
+                },
+                // 列出目录（用于测试连接，PROPFIND Depth:1）
+                getDirectoryContents: async function(path) {
+                    const url = `https://dav.jianguoyun.com/dav/${path}`;
+                    const response = await fetch(url, {
+                        method: 'PROPFIND',
+                        headers: {
+                            ...headers,
+                            'Depth': '1'
+                        }
+                    });
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    // 这里不解析 XML，只返回响应对象，测试时只需检查状态
+                    return response;
+                }
+            };
+        }
 
         function setWebdavStatus(msg, type = '') {
             const el = document.getElementById('webdavStatus');
@@ -3069,7 +3125,7 @@
             }
             try {
                 setWebdavStatus('⏳ 测试连接中...', '');
-                await client.getDirectoryContents('/');
+                await client.getDirectoryContents('/'); // 只需调用，成功即表示连接正常
                 setWebdavStatus('✅ 连接成功！坚果云可正常访问', 'success');
             } catch (err) {
                 console.error('测试失败:', err);
@@ -3112,14 +3168,16 @@
                 try {
                     await client.stat(REMOTE_FILE_PATH);
                     fileExists = true;
-                } catch (e) {}
+                } catch (e) {
+                    // 文件不存在
+                }
 
                 if (!fileExists) {
                     setStatus('⚠️ 云端暂无备份文件', 'warning');
                     return;
                 }
 
-                const data = await client.getFileContents(REMOTE_FILE_PATH, { format: 'text' });
+                const data = await client.getFileContents(REMOTE_FILE_PATH);
                 const imported = JSON.parse(data);
                 if (!Array.isArray(imported) || imported.length === 0) {
                     setStatus('⚠️ 云端数据为空或格式无效', 'warning');
