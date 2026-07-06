@@ -3008,20 +3008,21 @@
             localStorage.removeItem(WEBDAV_CONFIG_KEY);
         }
 
-        function getWebdavClient() {
-            const config = loadWebdavConfig();
-            if (!config) return null;
-            try {
-                const client = window.WebDAV.createClient('https://dav.jianguoyun.com/dav/', {
-                    username: config.email,
-                    password: config.password
-                });
-                return client;
-            } catch (e) {
-                console.error('WebDAV 客户端创建失败:', e);
-                return null;
-            }
-        }
+   function getWebdavClient() {
+    const config = loadWebdavConfig();
+    if (!config) return null;
+    try {
+        // 将 window.WebDAV 改为 window.webdav（全小写）
+        const client = window.webdav.createClient('https://dav.jianguoyun.com/dav/', {
+            username: config.email,
+            password: config.password
+        });
+        return client;
+    } catch (e) {
+        console.error('WebDAV 客户端创建失败:', e);
+        return null;
+    }
+}
 
         function setWebdavStatus(msg, type = '') {
             const el = document.getElementById('webdavStatus');
