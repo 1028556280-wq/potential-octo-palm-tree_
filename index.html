@@ -2318,40 +2318,123 @@
 // 净值获取（使用 fetch 获取 JS 文件，正则提取数据）
 // 纯前端，支持分红，无需后端
 // ============================================================
-async function fetchNetValueOnDate(fundCode, targetDate) {
-    const url = `https://fund.eastmoney.com/pingzhongdata/${fundCode}.js?v=${Date.now()}`;
-    
-    try {
-        // 获取完整的 JS 文件内容
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-        const text = await response.text();
-        
-        // 1. 提取单位净值数组（Data_netWorthTrend）
-        const unitMatch = text.match(/var\s+Data_netWorthTrend\s*=\s*(\[.*?\]);/s);
-        if (!unitMatch) throw new Error('未找到单位净值数据');
-        const unitData = JSON.parse(unitMatch[1]);
-        if (!unitData || unitData.length === 0) throw new Error('单位净值数据为空');
-        
-        // 2. 提取累计净值数组（Data_ACWorthTrend）
-        const accMatch = text.match(/var\s+Data_ACWorthTrend\s*=\s*(\[.*?\]);/s);
-        if (!accMatch) throw new Error('未找到累计净值数据');
-        const accData = JSON.parse(accMatch[1]);
-        if (!accData || accData.length === 0) throw new Error('累计净值数据为空');
-        
-        // 3. 将累计净值数组转换为日期索引对象
-        const accMap = {};
-        for (const item of accData) {
-            // accData 格式: [时间戳, 累计净值]
-            const timestamp = item[0];
-            const accNav = item[1];
-            const date = new Date(timestamp);
-            const dateStr = date.getFullYear() + '-' + 
-                           String(date.getMonth() + 1).padStart(2, '0') + '-' + 
-                           String(date.getDate()).padStart(2, '0');
-            accMap[dateStr] = accNav;
-        }
-        
+// ============================================================
+// 净值获取（使用 <script> 标签加载，累加分红计算累计净值）
+// 纯前端，无跨域问题，支持分红
+// ============================================================
+function fetchNetValueOnDate(fundCode, targetDate) {
+    return new Promise((resolve, reject) => {
+        const url = `https://fund.eastmoney.com/pingzhongdata/${fundCode}.js?v=${Date.now()}`;
+        const script = document.createElement('script');
+        script.src = url;
+
+        let resolved = false;
+        const cleanup = () => {
+            if (document.body.contains(script)) document.body.removeChild(script);
+            // 删除全局变量，避免内存泄漏
+            delete window.Data_netWorthTrend;
+        };
+
+        const timer = setTimeout(() => {
+            if (!resolved) {
+                resolved = true;
+                cleanup();
+                reject(new Error('请求超时'));
+            }
+        }, 10000);
+
+        script.onload = function() {
+            if (resolved) return;
+            resolved = true;
+            clearTimeout(timer);
+
+            try {
+                // 读取单位净值数据
+                const data = window.Data_netWorthTrend;
+                if (!data || data.length === 0) {
+                    cleanup();
+                    reject(new Error('未找到单位净值数据'));
+                    return;
+                }
+
+                // 按时间排序（从旧到新）
+                const sorted = [...data].sort((a, b) => a.x - b.x);
+
+                // 累加分红，构建日期索引
+                let cumulativeUnitMoney = 0;
+                const navMap = {};
+
+                for (const item of sorted) {
+                    const date = new Date(item.x);
+                    const dateStr = date.getFullYear() + '-' +
+                                   String(date.getMonth() + 1).padStart(2, '0') + '-' +
+                                   String(date.getDate()).padStart(2, '0');
+
+                    // 累加每份派送金额（分红）
+                    const unitMoney = parseFloat(item.unitMoney) || 0;
+                    cumulativeUnitMoney += unitMoney;
+
+                    // 累计净值 = 单位净值 + 累积分红
+                    navMap[dateStr] = {
+                        unitNav: item.y,
+                        accNav: item.y + cumulativeUnitMoney
+                    };
+                }
+
+                // 查找目标日期
+                let result = null;
+
+                // 1. 精确匹配
+                if (navMap[targetDate]) {
+                    result = navMap[targetDate];
+                } else {
+                    // 2. 查找该日期之前最近的一个交易日
+                    const targetTime = new Date(targetDate).getTime();
+                    let closestDate = null;
+                    let closestDiff = Infinity;
+
+                    for (const [dateStr, value] of Object.entries(navMap)) {
+                        const dateTime = new Date(dateStr).getTime();
+                        if (dateTime <= targetTime) {
+                            const diff = targetTime - dateTime;
+                            if (diff < closestDiff) {
+                                closestDiff = diff;
+                                closestDate = dateStr;
+                                result = value;
+                            }
+                        }
+                    }
+                }
+
+                if (!result) {
+                    cleanup();
+                    reject(new Error(`未找到 ${targetDate} 的净值数据`));
+                    return;
+                }
+
+                cleanup();
+                resolve({
+                    unitNav: result.unitNav,
+                    accNav: result.accNav
+                });
+
+            } catch (e) {
+                cleanup();
+                reject(new Error('解析失败: ' + e.message));
+            }
+        };
+
+        script.onerror = function() {
+            if (resolved) return;
+            resolved = true;
+            clearTimeout(timer);
+            cleanup();
+            reject(new Error('网络请求失败'));
+        };
+
+        document.head.appendChild(script);
+    });
+}        
         // 4. 查找目标日期的单位净值和累计净值
         let targetUnit = null;
         let targetAcc = null;
