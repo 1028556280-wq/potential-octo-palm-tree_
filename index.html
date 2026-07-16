@@ -6,9 +6,8 @@
     <title>天天向上专用——基金收益计算器</title>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js">
     </script>
-    <!-- ===== 已移除 webdav 库，改用原生 fetch ===== -->
     <style>
-        /* ===== 基础样式（与上一版完全相同） ===== */
+        /* ===== 基础样式（与上一版完全相同，未做任何改动） ===== */
         * {
             margin: 0;
             padding: 0;
@@ -35,18 +34,18 @@
         }
         .header {
             text-align: center;
-            margin-bottom: 4px;
-            padding-bottom: 3px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
             border-bottom: 2px solid #f0f4fe;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 4px;
+            gap: 6px;
             position: relative;
         }
         .header .brand {
-            font-size: 8px;
+            font-size: 9px;
             font-weight: 700;
             letter-spacing: 2px;
             color: #f6b83d;
@@ -58,10 +57,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
         }
         .header h1 {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 800;
             color: #1a2634;
             letter-spacing: 0.5px;
@@ -69,7 +68,7 @@
             display: inline-block;
         }
         .header .dev-credit {
-            font-size: 9px;
+            font-size: 10px;
             color: #aabbcc;
             margin-top: 0;
             letter-spacing: 2px;
@@ -80,12 +79,12 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             background: #4A90D9;
             color: #fff;
-            font-size: 15px;
+            font-size: 18px;
             font-weight: 700;
             border: none;
             cursor: pointer;
@@ -109,20 +108,20 @@
 
         .alert-bar {
             text-align: center;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
-            padding: 2px 0;
-            margin-bottom: 4px;
+            padding: 4px 0;
+            margin-bottom: 8px;
             border-radius: 8px;
             background: transparent;
             color: #c0392b;
-            min-height: 20px;
+            min-height: 24px;
             transition: all 0.2s;
         }
         .alert-bar.has-alert {
             background: #fce8e6;
             border: 1px solid #f5c6cb;
-            padding: 2px 8px;
+            padding: 4px 8px;
         }
         .alert-bar.no-alert {
             background: transparent;
@@ -605,6 +604,40 @@
             border-color: #4A90D9;
         }
 
+        /* ===== 新增排序控制 ===== */
+        .sort-control {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .sort-control label {
+            font-size: 12px;
+            color: #5a6e8a;
+            font-weight: 600;
+        }
+        .sort-control .qf-btn {
+            padding: 4px 14px;
+            border-radius: 20px;
+            border: 1px solid #dce2ea;
+            background: #f5f8fe;
+            font-size: 12px;
+            font-weight: 600;
+            color: #5a6e8a;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .sort-control .qf-btn:hover {
+            background: #e8edf5;
+        }
+        .sort-control .qf-btn.active {
+            background: #4A90D9;
+            color: #fff;
+            border-color: #4A90D9;
+        }
+
         .filter-section {
             display: flex;
             flex-wrap: wrap;
@@ -860,22 +893,22 @@
                 border-radius: 20px;
             }
             .header h1 {
-                font-size: 13px;
+                font-size: 14px;
             }
             .header .brand {
-                font-size: 7px;
-            }
-            .header .dev-credit {
                 font-size: 8px;
             }
+            .header .dev-credit {
+                font-size: 9px;
+            }
             .tutorial-btn-inline {
-                width: 24px;
-                height: 24px;
-                font-size: 13px;
+                width: 28px;
+                height: 28px;
+                font-size: 15px;
             }
             .alert-bar {
-                font-size: 11px;
-                min-height: 18px;
+                font-size: 12px;
+                min-height: 20px;
             }
             .section-title {
                 font-size: 9px;
@@ -1028,6 +1061,10 @@
                 font-size: 11px;
                 padding: 3px 10px;
             }
+            .sort-control .qf-btn {
+                font-size: 11px;
+                padding: 3px 10px;
+            }
         }
         @media (max-width: 380px) {
             .input-group label {
@@ -1055,7 +1092,7 @@
                 padding: 0 8px;
             }
             .header h1 {
-                font-size: 12px;
+                font-size: 13px;
             }
             .btn-save,
             .btn-view-history {
@@ -1089,14 +1126,18 @@
                 font-size: 10px;
                 padding: 2px 8px;
             }
-            .alert-bar {
+            .sort-control .qf-btn {
                 font-size: 10px;
-                min-height: 16px;
+                padding: 2px 8px;
+            }
+            .alert-bar {
+                font-size: 11px;
+                min-height: 18px;
             }
             .tutorial-btn-inline {
-                width: 22px;
-                height: 22px;
-                font-size: 11px;
+                width: 24px;
+                height: 24px;
+                font-size: 13px;
             }
         }
     </style>
@@ -1138,26 +1179,26 @@
         <!-- 金额 -->
         <div class="input-group">
             <label>金额(元)</label>
-            <input type="number" id="amount" placeholder="20000" step="any">
+            <input type="number" id="amount" step="any" placeholder="">
         </div>
 
         <!-- 红包 -->
         <div class="input-group">
             <label>红包(千分之)</label>
-            <input type="number" id="bonusRate" placeholder="0.8" step="any">
+            <input type="number" id="bonusRate" step="any" placeholder="">
         </div>
 
         <!-- 基金代码 -->
         <div class="input-group">
             <label>基金代码</label>
-            <input type="text" id="fundCode" placeholder="110022" class="fund-code-input">
+            <input type="text" id="fundCode" class="fund-code-input" placeholder="">
             <span id="fundNameDisplay" class="fund-name">—</span>
         </div>
 
         <!-- 交易对象 -->
         <div class="net-input-group">
             <label>交易对象</label>
-            <input type="text" id="tradeTarget" placeholder="输入交易对象" inputmode="text" lang="zh-CN">
+            <input type="text" id="tradeTarget" inputmode="text" lang="zh-CN" placeholder="">
         </div>
 
         <!-- ===== 自动登记按钮行 ===== -->
@@ -1188,17 +1229,17 @@
         <!-- 净值输入 -->
         <div class="net-input-group" id="buyGroup">
             <label>买入净值</label>
-            <input type="number" id="buyPrice" placeholder="1.2888" step="any">
+            <input type="number" id="buyPrice" step="any" placeholder="">
         </div>
         <div class="net-input-group" id="sellGroup">
             <label>卖出净值</label>
-            <input type="number" id="sellPrice" placeholder="1.2762" step="any">
+            <input type="number" id="sellPrice" step="any" placeholder="">
         </div>
 
         <!-- 分红净值（只读） -->
         <div class="net-input-group">
             <label>分红净值</label>
-            <input type="number" id="dividendPrice" placeholder="0" step="any" readonly style="color:#555; background:#f0f2f5; cursor:not-allowed;">
+            <input type="number" id="dividendPrice" step="any" readonly style="color:#555; background:#f0f2f5; cursor:not-allowed;" placeholder="">
         </div>
 
         <!-- 结果 -->
@@ -1220,44 +1261,16 @@
             <span class="history-count" id="historyCount">📂 0 条</span>
         </div>
 
-        <!-- ===== 备份与同步区域（原有：导出/导入/生成链接） ===== -->
+        <!-- ===== 新增：备份与同步区域 ===== -->
         <div style="display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;">
             <button class="btn-save" id="exportBackupBtn" style="flex:1; background: linear-gradient(135deg, #f6b83d, #e6a020); box-shadow: 0 4px 12px rgba(246,184,61,0.25);">📤 导出备份</button>
             <button class="btn-view-history" id="importBackupBtn" style="flex:1; background: linear-gradient(135deg, #8a9bb5, #6a7b95); box-shadow: 0 4px 12px rgba(138,155,181,0.25);">📥 导入备份</button>
             <button class="btn-fetch latest" id="genSyncLinkBtn" style="flex:1; background: linear-gradient(135deg, #9b59b6, #8e44ad); box-shadow: 0 4px 12px rgba(155,89,182,0.25);">🔗 生成同步链接</button>
             <input type="file" id="importFileInput" accept=".json" style="display:none;">
         </div>
+        <!-- ===== 新增结束 ===== -->
 
-        <!-- ===== 新增：坚果云同步区域（使用原生 fetch） ===== -->
-        <div style="margin-top: 8px; border-top: 2px solid #eef2f9; padding-top: 8px;">
-            <details style="font-size: 12px; color: #5a6e8a;">
-                <summary style="font-weight: 600; cursor: pointer; color: #4A90D9;">☁️ 坚果云同步设置（点击展开）</summary>
-                <div style="margin-top: 6px; display: flex; flex-direction: column; gap: 6px; background: #f5f8fe; padding: 8px; border-radius: 10px;">
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                        <label style="width: 60px; font-weight: 600; font-size: 12px;">邮箱</label>
-                        <input type="email" id="webdavEmail" placeholder="您的坚果云邮箱" style="flex:1; padding: 4px 6px; border-radius: 6px; border:1px solid #dce2ea; font-size:12px;">
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                        <label style="width: 60px; font-weight: 600; font-size: 12px;">应用密码</label>
-                        <input type="password" id="webdavPassword" placeholder="应用专用密码" style="flex:1; padding: 4px 6px; border-radius: 6px; border:1px solid #dce2ea; font-size:12px;">
-                    </div>
-                    <div style="display: flex; gap: 6px; margin-top: 4px;">
-                        <button class="btn-save" id="webdavSaveBtn" style="flex:1; font-size: 11px; padding: 4px 0;">💾 保存设置</button>
-                        <button class="btn-view-history" id="webdavClearBtn" style="flex:1; font-size: 11px; padding: 4px 0; background: #8a9bb5;">🗑️ 清除设置</button>
-                        <button class="btn-fetch latest" id="webdavTestBtn" style="flex:1; font-size: 11px; padding: 4px 0; background: #4A90D9;">🔌 测试连接</button>
-                    </div>
-                    <div id="webdavStatus" style="font-size: 11px; color: #8a9bb5; text-align: center; min-height: 16px;"></div>
-                </div>
-            </details>
-        </div>
-
-        <!-- 坚果云上传/下载按钮 -->
-        <div style="display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;">
-            <button class="btn-save" id="webdavUploadBtn" style="flex:1; background: linear-gradient(135deg, #f39c12, #e67e22); font-size: 11px;">☁️ 上传到坚果云</button>
-            <button class="btn-view-history" id="webdavDownloadBtn" style="flex:1; background: linear-gradient(135deg, #2ecc71, #27ae60); font-size: 11px;">☁️ 从坚果云下载</button>
-        </div>
-
-        <div class="hint">所有输入自动计算 · 数据保存在本地 · 坚果云同步需手动上传/下载</div>
+        <div class="hint">所有输入自动计算 · 数据保存在本地</div>
     </div>
 
     <!-- ===== 历史记录弹窗 ===== -->
@@ -1270,8 +1283,18 @@
             <div class="quick-filter">
                 <button class="qf-btn" id="qfTodayBuy" data-type="buy">📅 今日买入</button>
                 <button class="qf-btn" id="qfTodaySell" data-type="sell">📅 今日卖出</button>
+                <!-- 新增“次日卖出”按钮 -->
+                <button class="qf-btn" id="qfNextSell">📅 次日卖出</button>
                 <button class="qf-btn" id="qfClear" style="background:transparent; border-color:transparent; color:#8a9bb5;">清除筛选</button>
             </div>
+
+            <!-- ===== 排序控制 ===== -->
+            <div class="sort-control">
+                <label>排序：</label>
+                <button class="qf-btn active" id="sortDefaultBtn">默认顺序</button>
+                <button class="qf-btn" id="sortSellDateDescBtn">卖出日期倒序</button>
+            </div>
+
             <div class="filter-section" id="filterSection">
                 <label>筛选字段：</label>
                 <select id="filterField">
@@ -1353,8 +1376,9 @@
                 <h4>📊 查看与管理历史记录</h4>
                 <ul>
                     <li>点击「📋 查看记录」打开历史列表，支持：<br>
-                        • <span class="highlight">快速筛选</span>：今日买入 / 今日卖出<br>
-                        • <span class="highlight">高级筛选</span>：按年/年月/具体日期筛选买入或卖出日期，<strong>选择即生效</strong><br>
+                        • <span class="highlight">快速筛选</span>：今日买入 / 今日卖出 / 次日卖出<br>
+                        • <span class="highlight">高级筛选</span>：按年/年月/具体日期筛选买入或卖出日期，需点击「应用」生效<br>
+                        • <span class="highlight">排序切换</span>：默认按记录顺序，可切换为按卖出日期倒序<br>
                         • <span class="highlight">列显示控制</span>：点击列标签可隐藏/显示，状态自动保存<br>
                         • 每条记录支持 <span class="highlight">更新</span>（重新获取净值）、<span class="highlight">编辑</span>（手动修改）、<span class="highlight">删除</span>
                     </li>
@@ -1371,15 +1395,6 @@
                 <ul>
                     <li>页面顶部独立区域显示「今日应结算 X 单」，提醒您今日有卖出日期的记录需要处理。</li>
                 </ul>
-
-                <h4>☁️ 跨设备同步（坚果云）</h4>
-                <ul>
-                    <li>点击「☁️ 坚果云同步设置」，输入您的坚果云邮箱和应用密码（需在坚果云官网生成），保存设置。</li>
-                    <li>点击「测试连接」验证配置是否正确。</li>
-                    <li>在其他设备（手机/平板/另一台电脑）打开同一个网页，配置相同的坚果云账号，即可通过「上传到坚果云」和「从坚果云下载」同步数据。</li>
-                    <li>数据仅存储于您的坚果云网盘，其他人无法访问。</li>
-                </ul>
-
                 <p style="margin-top: 12px; color: #8a9bb5; font-size: 12px; text-align: center;">💡 如有疑问，可再次点击标题右侧 ❓ 按钮查看本教程。</p>
             </div>
         </div>
@@ -1423,7 +1438,6 @@
         const TRADE_TYPE_KEY = 'trade_type_preference';
         const VISIBLE_COLUMNS_KEY = 'fund_visible_columns';
         const TUTORIAL_SHOWN_KEY = 'fund_tutorial_shown';
-        const WEBDAV_CONFIG_KEY = 'fund_webdav_config';
 
         // ============================================================
         // 列可见性配置
@@ -1477,6 +1491,9 @@
             date: '',
             tradeType: 'all'
         };
+
+        // 当前排序方式
+        let currentSort = 'default'; // 'default' 或 'sellDateDesc'
 
         // ============================================================
         // 历史记录管理
@@ -1920,18 +1937,35 @@
         }
 
         // ============================================================
-        // 计算合计
+        // 计算合计（新增金额合计和红包合计）
         // ============================================================
         function calculateTotals(records) {
             let netSum = 0,
-                finalSum = 0;
+                finalSum = 0,
+                amountSum = 0,
+                bonusSum = 0;
             records.forEach(r => {
+                const amount = parseFloat(r.amount) || 0;
+                const bonusRate = parseFloat(r.bonusRate) || 0;
+                amountSum += amount;
+                bonusSum += amount * bonusRate / 1000;
                 const n = parseFloat(r.netProfit);
                 if (!isNaN(n)) netSum += n;
                 const f = parseFloat(r.finalResult);
                 if (!isNaN(f)) finalSum += f;
             });
-            return { netSum, finalSum };
+            return { netSum, finalSum, amountSum, bonusSum };
+        }
+
+        // ============================================================
+        // 格式化合计数值（六位数以上用科学计数法）
+        // ============================================================
+        function formatTotal(num) {
+            if (num === 0) return '0.0';
+            if (Math.abs(num) >= 10000) {
+                return num.toExponential(2);
+            }
+            return num.toFixed(1);
         }
 
         // ============================================================
@@ -1951,7 +1985,7 @@
         }
 
         // ============================================================
-        // 快速筛选功能
+        // 快速筛选功能（包含次日卖出）
         // ============================================================
         function applyQuickFilter(type) {
             const today = new Date().toISOString().slice(0, 10);
@@ -1964,6 +1998,18 @@
                 currentFilter.field = 'sellDate';
                 currentFilter.type = 'date';
                 currentFilter.date = today;
+                currentFilter.tradeType = 'all';
+            } else if (type === 'nextsell') {
+                // 计算下一个交易日（从明天开始找）
+                let d = new Date();
+                d.setDate(d.getDate() + 1);
+                while (!isTradingDay(d)) {
+                    d.setDate(d.getDate() + 1);
+                }
+                const nextSellDate = d.toISOString().slice(0, 10);
+                currentFilter.field = 'sellDate';
+                currentFilter.type = 'date';
+                currentFilter.date = nextSellDate;
                 currentFilter.tradeType = 'all';
             } else {
                 currentFilter.field = 'buyDate';
@@ -1993,7 +2039,7 @@
         }
 
         // ============================================================
-        // 应用筛选（由控件变化自动触发或点击应用按钮触发）
+        // 应用筛选（点击“应用”按钮触发）
         // ============================================================
         function applyFilter() {
             const field = document.getElementById('filterField').value;
@@ -2006,23 +2052,14 @@
             if (type === 'all') {
                 currentFilter = { field, type: 'all', year: '', month: '', date: '', tradeType };
             } else if (type === 'year') {
+                // 年份必须为4位数字，否则回退到全部
                 if (!year || year.length !== 4 || isNaN(year)) {
-                    // 如果年份无效，保持原样或提示，这里简单保持
-                    // 但为了自动触发，我们不弹alert，而是保持当前筛选不变
-                    // 但这里可以静默忽略，或使用之前的有效值
-                    if (!currentFilter.year || currentFilter.year.length !== 4) {
-                        // 如果没有有效年份，回退到全部
-                        currentFilter = { field, type: 'all', year: '', month: '', date: '', tradeType };
-                    } else {
-                        // 保留旧的年份
-                        currentFilter = { field, type: 'year', year: currentFilter.year, month: '', date: '', tradeType };
-                    }
+                    currentFilter = { field, type: 'all', year: '', month: '', date: '', tradeType };
                 } else {
                     currentFilter = { field, type: 'year', year, month: '', date: '', tradeType };
                 }
             } else if (type === 'yearmonth') {
                 if (!month) {
-                    // 没有选年月，回退到全部
                     currentFilter = { field, type: 'all', year: '', month: '', date: '', tradeType };
                 } else {
                     currentFilter = { field, type: 'yearmonth', year: '', month, date: '', tradeType };
@@ -2039,70 +2076,70 @@
         }
 
         // ============================================================
-        // 筛选控件事件绑定（自动触发）
+        // 筛选控件事件绑定（只绑定“应用”按钮，其他控件不自动触发）
         // ============================================================
         function setupFilterEvents() {
-            const filterField = document.getElementById('filterField');
+            const filterApplyBtn = document.getElementById('filterApplyBtn');
+            const filterResetBtn = document.getElementById('filterResetBtn');
             const filterType = document.getElementById('filterType');
             const filterYear = document.getElementById('filterYear');
             const filterMonth = document.getElementById('filterMonth');
             const filterDate = document.getElementById('filterDate');
-            const filterTradeType = document.getElementById('filterTradeType');
-            const filterApplyBtn = document.getElementById('filterApplyBtn');
-            const filterResetBtn = document.getElementById('filterResetBtn');
 
-            // 为所有筛选控件添加事件，变化时自动应用（除了年份/月份/日期输入，使用input事件）
-            const autoApplyElements = [filterField, filterType, filterTradeType];
-            autoApplyElements.forEach(el => {
-                el.addEventListener('change', applyFilter);
-            });
+            // 点击“应用”按钮执行筛选
+            filterApplyBtn.addEventListener('click', applyFilter);
 
-            // 年份、月份、日期输入框变化时自动应用（使用input事件）
-            filterYear.addEventListener('input', applyFilter);
-            filterMonth.addEventListener('input', applyFilter);
-            filterDate.addEventListener('input', applyFilter);
-
-            // 显示/隐藏相应输入框（根据筛选方式）
-            filterType.addEventListener('change', function() {
-                const val = this.value;
-                filterYear.style.display = (val === 'year') ? 'inline-block' : 'none';
-                filterMonth.style.display = (val === 'yearmonth') ? 'inline-block' : 'none';
-                filterDate.style.display = (val === 'date') ? 'inline-block' : 'none';
-                // 清空不相关的输入
-                if (val !== 'year') filterYear.value = '';
-                if (val !== 'yearmonth') filterMonth.value = '';
-                if (val !== 'date') filterDate.value = '';
-                // 自动应用会在change事件中触发
-            });
-
-            // 重置按钮
+            // 重置按钮：清空筛选条件并恢复默认
             filterResetBtn.addEventListener('click', function() {
+                document.getElementById('filterField').value = 'buyDate';
                 filterType.value = 'all';
-                filterTradeType.value = 'all';
+                document.getElementById('filterTradeType').value = 'all';
                 filterYear.style.display = 'none';
                 filterMonth.style.display = 'none';
                 filterDate.style.display = 'none';
                 filterYear.value = '';
                 filterMonth.value = '';
                 filterDate.value = '';
-                currentFilter = { field: filterField.value, type: 'all', year: '', month: '', date: '', tradeType: 'all' };
+                currentFilter = { field: 'buyDate', type: 'all', year: '', month: '', date: '', tradeType: 'all' };
                 syncFilterUI();
                 renderHistoryModal();
             });
 
-            // 应用按钮（保留，但自动触发后可能不常用，但仍可点击）
-            filterApplyBtn.addEventListener('click', applyFilter);
+            // 当“方式”变化时，显示对应的输入框（仅界面交互，不触发筛选）
+            filterType.addEventListener('change', function() {
+                const val = this.value;
+                filterYear.style.display = (val === 'year') ? 'inline-block' : 'none';
+                filterMonth.style.display = (val === 'yearmonth') ? 'inline-block' : 'none';
+                filterDate.style.display = (val === 'date') ? 'inline-block' : 'none';
+                if (val !== 'year') filterYear.value = '';
+                if (val !== 'yearmonth') filterMonth.value = '';
+                if (val !== 'date') filterDate.value = '';
+            });
 
             // 初始化显示
             filterType.dispatchEvent(new Event('change'));
         }
 
         // ============================================================
-        // 弹窗渲染
+        // 弹窗渲染（包含排序逻辑）
         // ============================================================
         function renderHistoryModal() {
             const body = document.getElementById('modalBody');
-            const filtered = filterRecords(historyRecords);
+            let filtered = filterRecords(historyRecords);
+
+            // 根据当前排序方式排序
+            if (currentSort === 'sellDateDesc') {
+                filtered.sort((a, b) => {
+                    const dateA = a.sellDate || '';
+                    const dateB = b.sellDate || '';
+                    if (dateA === '' && dateB === '') return 0;
+                    if (dateA === '') return 1;
+                    if (dateB === '') return -1;
+                    return dateB.localeCompare(dateA); // 倒序
+                });
+            }
+            // 默认不排序，保持原数组顺序（即记录添加顺序）
+
             const totals = calculateTotals(filtered);
 
             if (filtered.length === 0) {
@@ -2118,27 +2155,42 @@
             });
             headerHtml += '<th style="width:80px;text-align:center;">操作</th></tr>';
 
+            // ---- 合计行 ----
             let totalHtml = '<tr class="total-row">';
             COLUMNS.forEach(col => {
                 if (visibleColumns[col.key]) {
-                    if (col.key === 'netProfit') {
-                        totalHtml +=
-                            `<td style="text-align:center;font-weight:700;color:#34a853;">${totals.netSum.toFixed(2)}</td>`;
-                    } else if (col.key === 'finalResult') {
-                        totalHtml +=
-                            `<td style="text-align:center;font-weight:700;color:#34a853;">${totals.finalSum.toFixed(2)}</td>`;
-                    } else if (col.key === 'index') {
+                    if (col.key === 'index') {
                         totalHtml += `<td style="text-align:center;">合计</td>`;
+                    } else if (col.key === 'amount') {
+                        const val = totals.amountSum;
+                        const formatted = formatTotal(val);
+                        const color = val > 0 ? '#34a853' : (val < 0 ? '#ea4335' : '#1a2634');
+                        totalHtml += `<td style="text-align:center;font-weight:700;color:${color};">${formatted}</td>`;
+                    } else if (col.key === 'bonusRate') {
+                        const val = totals.bonusSum;
+                        const formatted = formatTotal(val);
+                        const color = val > 0 ? '#34a853' : (val < 0 ? '#ea4335' : '#1a2634');
+                        totalHtml += `<td style="text-align:center;font-weight:700;color:${color};">${formatted}</td>`;
+                    } else if (col.key === 'netProfit') {
+                        const val = totals.netSum;
+                        const formatted = formatTotal(val);
+                        const color = val > 0 ? '#34a853' : (val < 0 ? '#ea4335' : '#1a2634');
+                        totalHtml += `<td style="text-align:center;font-weight:700;color:${color};">${formatted}</td>`;
+                    } else if (col.key === 'finalResult') {
+                        const val = totals.finalSum;
+                        const formatted = formatTotal(val);
+                        const color = val > 0 ? '#34a853' : (val < 0 ? '#ea4335' : '#1a2634');
+                        totalHtml += `<td style="text-align:center;font-weight:700;color:${color};">${formatted}</td>`;
                     } else {
                         totalHtml += `<td></td>`;
                     }
                 }
             });
             totalHtml += '<td></td></tr>';
+            // ---- 合计行结束 ----
 
             let rowsHtml = '';
-            const reversed = [...filtered].reverse();
-            reversed.forEach((r, idx) => {
+            filtered.forEach((r, idx) => {
                 const realIndex = historyRecords.indexOf(r);
                 rowsHtml += '<tr>';
                 COLUMNS.forEach(col => {
@@ -2222,6 +2274,8 @@
             renderHistoryModal();
             document.getElementById('historyModal').classList.add('active');
             document.body.style.overflow = 'hidden';
+            // 更新排序按钮状态
+            updateSortButtonUI();
         }
 
         function closeModal() {
@@ -2230,64 +2284,145 @@
         }
 
         // ============================================================
-        // 净值获取核心
+        // 排序按钮UI更新与事件绑定
         // ============================================================
-        function fetchNetValueOnDate(fundCode, targetDate) {
-            return new Promise((resolve, reject) => {
-                const url =
-                    `https://fundf10.eastmoney.com/F10DataApi.aspx?type=lsjz&code=${fundCode}&page=1&per=1&sdate=${targetDate}&edate=${targetDate}`;
-                const script = document.createElement('script');
-                script.src = url;
-                let resolved = false;
-                const cleanup = () => { if (document.body.contains(script)) document.body.removeChild(script); };
-                const timer = setTimeout(() => {
-                    if (!resolved) { resolved = true;
-                        cleanup();
-                        reject(new Error('请求超时')); }
-                }, 10000);
-                script.onload = function() {
-                    if (resolved) return;
-                    resolved = true;
-                    clearTimeout(timer);
-                    try {
-                        const apidata = window.apidata;
-                        if (!apidata || !apidata.content) { cleanup();
-                            reject(new Error('数据为空')); return; }
-                        const content = apidata.content;
-                        if (content.includes('暂无数据')) { cleanup();
-                            reject(new Error('无数据')); return; }
-                        const rows = content.split('<tr>');
-                        for (const row of rows) {
-                            if (row.includes(`<td>${targetDate}</td>`)) {
-                                const cells = row.match(/<td[^>]*>(.*?)<\/td>/g);
-                                if (cells && cells.length >= 3) {
-                                    const unitStr = cells[1].replace(/<[^>]+>/g, '').trim();
-                                    const accStr = cells[2].replace(/<[^>]+>/g, '').trim();
-                                    const unitNav = parseFloat(unitStr);
-                                    const accNav = parseFloat(accStr);
-                                    if (!isNaN(unitNav) && !isNaN(accNav)) {
-                                        cleanup();
-                                        resolve({ unitNav, accNav });
-                                        return;
-                                    }
-                                }
-                            }
-                        }
-                        cleanup();
-                        reject(new Error('未找到净值'));
-                    } catch (e) { cleanup();
-                        reject(new Error('解析失败: ' + e.message)); }
-                };
-                script.onerror = function() {
-                    if (resolved) return;
-                    resolved = true;
-                    clearTimeout(timer);
-                    cleanup();
-                    reject(new Error('网络请求失败'));
-                };
-                document.head.appendChild(script);
+        function updateSortButtonUI() {
+            const defaultBtn = document.getElementById('sortDefaultBtn');
+            const descBtn = document.getElementById('sortSellDateDescBtn');
+            if (currentSort === 'default') {
+                defaultBtn.classList.add('active');
+                descBtn.classList.remove('active');
+            } else {
+                defaultBtn.classList.remove('active');
+                descBtn.classList.add('active');
+            }
+        }
+
+        function setupSortControls() {
+            document.getElementById('sortDefaultBtn').addEventListener('click', function() {
+                currentSort = 'default';
+                updateSortButtonUI();
+                renderHistoryModal();
+            });
+            document.getElementById('sortSellDateDescBtn').addEventListener('click', function() {
+                currentSort = 'sellDateDesc';
+                updateSortButtonUI();
+                renderHistoryModal();
             });
         }
+
+        // ============================================================
+        // 净值获取核心
+        // ============================================================
+       // ============================================================
+// 净值获取（使用 fetch 获取 JS 文件，正则提取数据）
+// 纯前端，支持分红，无需后端
+// ============================================================
+async function fetchNetValueOnDate(fundCode, targetDate) {
+    const url = `https://fund.eastmoney.com/pingzhongdata/${fundCode}.js?v=${Date.now()}`;
+    
+    try {
+        // 获取完整的 JS 文件内容
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+        const text = await response.text();
+        
+        // 1. 提取单位净值数组（Data_netWorthTrend）
+        const unitMatch = text.match(/var\s+Data_netWorthTrend\s*=\s*(\[.*?\]);/s);
+        if (!unitMatch) throw new Error('未找到单位净值数据');
+        const unitData = JSON.parse(unitMatch[1]);
+        if (!unitData || unitData.length === 0) throw new Error('单位净值数据为空');
+        
+        // 2. 提取累计净值数组（Data_ACWorthTrend）
+        const accMatch = text.match(/var\s+Data_ACWorthTrend\s*=\s*(\[.*?\]);/s);
+        if (!accMatch) throw new Error('未找到累计净值数据');
+        const accData = JSON.parse(accMatch[1]);
+        if (!accData || accData.length === 0) throw new Error('累计净值数据为空');
+        
+        // 3. 将累计净值数组转换为日期索引对象
+        const accMap = {};
+        for (const item of accData) {
+            // accData 格式: [时间戳, 累计净值]
+            const timestamp = item[0];
+            const accNav = item[1];
+            const date = new Date(timestamp);
+            const dateStr = date.getFullYear() + '-' + 
+                           String(date.getMonth() + 1).padStart(2, '0') + '-' + 
+                           String(date.getDate()).padStart(2, '0');
+            accMap[dateStr] = accNav;
+        }
+        
+        // 4. 查找目标日期的单位净值和累计净值
+        let targetUnit = null;
+        let targetAcc = null;
+        let matchedDate = null;
+        
+        // 先尝试精确匹配
+        for (const item of unitData) {
+            const timestamp = item.x;
+            const date = new Date(timestamp);
+            const dateStr = date.getFullYear() + '-' + 
+                           String(date.getMonth() + 1).padStart(2, '0') + '-' + 
+                           String(date.getDate()).padStart(2, '0');
+            
+            if (dateStr === targetDate) {
+                targetUnit = item.y;
+                if (accMap[dateStr] !== undefined) {
+                    targetAcc = accMap[dateStr];
+                    matchedDate = dateStr;
+                    break;
+                }
+            }
+        }
+        
+        // 如果精确匹配没找到，找该日期之前最近的一个交易日
+        if (!matchedDate) {
+            const targetTime = new Date(targetDate).getTime();
+            let closestUnit = null;
+            let closestAcc = null;
+            let closestDate = null;
+            let closestDiff = Infinity;
+            
+            for (const item of unitData) {
+                const timestamp = item.x;
+                if (timestamp <= targetTime) {
+                    const diff = targetTime - timestamp;
+                    if (diff < closestDiff) {
+                        closestDiff = diff;
+                        closestUnit = item.y;
+                        const date = new Date(timestamp);
+                        const dateStr = date.getFullYear() + '-' + 
+                                       String(date.getMonth() + 1).padStart(2, '0') + '-' + 
+                                       String(date.getDate()).padStart(2, '0');
+                        closestDate = dateStr;
+                        if (accMap[dateStr] !== undefined) {
+                            closestAcc = accMap[dateStr];
+                        }
+                    }
+                }
+            }
+            
+            if (closestUnit !== null && closestAcc !== null) {
+                matchedDate = closestDate;
+                targetUnit = closestUnit;
+                targetAcc = closestAcc;
+            }
+        }
+        
+        if (!matchedDate || targetUnit === null || targetAcc === null) {
+            throw new Error(`未找到 ${targetDate} 的完整净值数据`);
+        }
+        
+        return {
+            unitNav: targetUnit,
+            accNav: targetAcc
+        };
+        
+    } catch (error) {
+        console.error('获取净值失败:', error);
+        throw error;
+    }
+}
 
         // ============================================================
         // 存储买入和卖出时的单位净值与累计净值
@@ -2390,17 +2525,19 @@
         }
 
         // ============================================================
-        // 通过累计净值计算分红
+        // 通过累计净值计算分红（若净值不全则清空）
         // ============================================================
         function updateDividendFromNav() {
+            const dividendInput = document.getElementById('dividendPrice');
             if (buyUnitNav === null || buyAccNav === null || sellUnitNav === null || sellAccNav === null) {
+                dividendInput.value = '';
                 return;
             }
 
             let dividend = (sellAccNav - buyAccNav) - (sellUnitNav - buyUnitNav);
             dividend = dividend > 0 ? Number(dividend.toFixed(4)) : 0;
 
-            document.getElementById('dividendPrice').value = dividend;
+            dividendInput.value = dividend;
 
             if (dividend > 0) {
                 setStatus(`✅ 分红净值已自动计算 (累计 ${dividend.toFixed(4)})`, 'success');
@@ -2412,7 +2549,7 @@
         }
 
         // ============================================================
-        // 计算函数
+        // 计算函数（分红净值空值处理）
         // ============================================================
         function calculate() {
             const amount = parseFloat(document.getElementById('amount').value) || 0;
@@ -2712,14 +2849,23 @@
         document.getElementById('qfTodaySell').addEventListener('click', function() {
             applyQuickFilter('sell');
         });
+        // 新增“次日卖出”事件
+        document.getElementById('qfNextSell').addEventListener('click', function() {
+            applyQuickFilter('nextsell');
+        });
         document.getElementById('qfClear').addEventListener('click', function() {
             applyQuickFilter('clear');
         });
 
         // ============================================================
-        // 筛选控件事件（自动触发）
+        // 筛选控件事件（手动应用）
         // ============================================================
         setupFilterEvents();
+
+        // ============================================================
+        // 排序控件事件
+        // ============================================================
+        setupSortControls();
 
         // ============================================================
         // ========== 使用教程功能 ==========
@@ -2812,7 +2958,7 @@
         });
 
         // ============================================================
-        // ===== 跨设备备份与同步功能（原有：导出/导入/生成链接） =====
+        // ===== 新增：跨设备备份与同步功能 =====
         // ============================================================
 
         // 1. 导出备份（下载 JSON 文件）
@@ -2978,242 +3124,6 @@
         }
 
         // ============================================================
-        // ===== 新增：坚果云 WebDAV（原生 fetch 实现） =====
-        // ============================================================
-        const REMOTE_FILE_PATH = 'fund_data.json';
-
-        function loadWebdavConfig() {
-            try {
-                const raw = localStorage.getItem(WEBDAV_CONFIG_KEY);
-                if (raw) {
-                    const config = JSON.parse(raw);
-                    if (config.email && config.password) {
-                        return config;
-                    }
-                }
-            } catch (e) {}
-            return null;
-        }
-
-        function saveWebdavConfig(email, password) {
-            try {
-                localStorage.setItem(WEBDAV_CONFIG_KEY, JSON.stringify({ email, password }));
-                return true;
-            } catch (e) { return false; }
-        }
-
-        function clearWebdavConfig() {
-            localStorage.removeItem(WEBDAV_CONFIG_KEY);
-        }
-
-        // ---------- 核心：使用原生 fetch 实现 WebDAV 操作 ----------
-        function getWebdavClient() {
-            const config = loadWebdavConfig();
-            if (!config) return null;
-
-            // 生成 Basic Auth 头
-            const credentials = btoa(`${config.email}:${config.password}`);
-            const headers = {
-                'Authorization': `Basic ${credentials}`,
-                'Content-Type': 'application/octet-stream'
-            };
-
-            // 返回一个包含三个方法的对象
-            return {
-                // 检查文件是否存在（PROPFIND）
-                stat: async function(path) {
-                    const url = `https://dav.jianguoyun.com/dav/${path}`;
-                    const response = await fetch(url, {
-                        method: 'PROPFIND',
-                        headers: {
-                            ...headers,
-                            'Depth': '0'
-                        }
-                    });
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                    }
-                    return response; // 返回 response 对象，调用者可自行解析，但我们只需要状态码，此处只抛异常即可
-                },
-                // 读取文件内容（GET）
-                getFileContents: async function(path) {
-                    const url = `https://dav.jianguoyun.com/dav/${path}`;
-                    const response = await fetch(url, {
-                        method: 'GET',
-                        headers: headers
-                    });
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                    }
-                    return await response.text();
-                },
-                // 上传文件（PUT）
-                putFileContents: async function(path, content, options = {}) {
-                    const url = `https://dav.jianguoyun.com/dav/${path}`;
-                    const response = await fetch(url, {
-                        method: 'PUT',
-                        headers: headers,
-                        body: content
-                    });
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                    }
-                    return response;
-                },
-                // 列出目录（用于测试连接，PROPFIND Depth:1）
-                getDirectoryContents: async function(path) {
-                    const url = `https://dav.jianguoyun.com/dav/${path}`;
-                    const response = await fetch(url, {
-                        method: 'PROPFIND',
-                        headers: {
-                            ...headers,
-                            'Depth': '1'
-                        }
-                    });
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                    }
-                    // 这里不解析 XML，只返回响应对象，测试时只需检查状态
-                    return response;
-                }
-            };
-        }
-
-        function setWebdavStatus(msg, type = '') {
-            const el = document.getElementById('webdavStatus');
-            if (el) {
-                el.textContent = msg;
-                el.style.color = type === 'success' ? '#34a853' : (type === 'error' ? '#f28b82' : '#8a9bb5');
-            }
-        }
-
-        // 保存设置
-        document.getElementById('webdavSaveBtn')?.addEventListener('click', function() {
-            const email = document.getElementById('webdavEmail').value.trim();
-            const password = document.getElementById('webdavPassword').value.trim();
-            if (!email || !password) {
-                setWebdavStatus('⚠️ 请输入邮箱和应用密码', 'error');
-                return;
-            }
-            saveWebdavConfig(email, password);
-            setWebdavStatus('✅ 配置已保存到本地', 'success');
-            document.getElementById('webdavEmail').value = email;
-            document.getElementById('webdavPassword').value = password;
-        });
-
-        // 清除设置
-        document.getElementById('webdavClearBtn')?.addEventListener('click', function() {
-            clearWebdavConfig();
-            document.getElementById('webdavEmail').value = '';
-            document.getElementById('webdavPassword').value = '';
-            setWebdavStatus('🗑️ 已清除本地配置', '');
-        });
-
-        // 测试连接
-        document.getElementById('webdavTestBtn')?.addEventListener('click', async function() {
-            const email = document.getElementById('webdavEmail').value.trim();
-            const password = document.getElementById('webdavPassword').value.trim();
-            if (!email || !password) {
-                setWebdavStatus('⚠️ 请先填写邮箱和应用密码', 'error');
-                return;
-            }
-            saveWebdavConfig(email, password);
-            const client = getWebdavClient();
-            if (!client) {
-                setWebdavStatus('❌ 创建客户端失败，请检查配置', 'error');
-                return;
-            }
-            try {
-                setWebdavStatus('⏳ 测试连接中...', '');
-                await client.getDirectoryContents('/'); // 只需调用，成功即表示连接正常
-                setWebdavStatus('✅ 连接成功！坚果云可正常访问', 'success');
-            } catch (err) {
-                console.error('测试失败:', err);
-                setWebdavStatus('❌ 连接失败：' + (err.message || '账号或密码错误'), 'error');
-            }
-        });
-
-        // 上传到坚果云
-        document.getElementById('webdavUploadBtn')?.addEventListener('click', async function() {
-            if (historyRecords.length === 0) {
-                setStatus('⚠️ 暂无记录可上传', 'warning');
-                return;
-            }
-            const client = getWebdavClient();
-            if (!client) {
-                setStatus('❌ 请先配置坚果云账号（点击“☁️ 坚果云同步设置”）', 'error');
-                return;
-            }
-            try {
-                setStatus('⏳ 正在上传数据到坚果云...', '');
-                const jsonStr = JSON.stringify(historyRecords, null, 2);
-                await client.putFileContents(REMOTE_FILE_PATH, jsonStr, { overwrite: true });
-                setStatus(`✅ 成功上传 ${historyRecords.length} 条记录到坚果云`, 'success');
-            } catch (err) {
-                console.error('上传失败:', err);
-                setStatus('❌ 上传失败：' + err.message, 'error');
-            }
-        });
-
-        // 从坚果云下载
-        document.getElementById('webdavDownloadBtn')?.addEventListener('click', async function() {
-            const client = getWebdavClient();
-            if (!client) {
-                setStatus('❌ 请先配置坚果云账号（点击“☁️ 坚果云同步设置”）', 'error');
-                return;
-            }
-            try {
-                setStatus('⏳ 正在从坚果云下载数据...', '');
-                let fileExists = false;
-                try {
-                    await client.stat(REMOTE_FILE_PATH);
-                    fileExists = true;
-                } catch (e) {
-                    // 文件不存在
-                }
-
-                if (!fileExists) {
-                    setStatus('⚠️ 云端暂无备份文件', 'warning');
-                    return;
-                }
-
-                const data = await client.getFileContents(REMOTE_FILE_PATH);
-                const imported = JSON.parse(data);
-                if (!Array.isArray(imported) || imported.length === 0) {
-                    setStatus('⚠️ 云端数据为空或格式无效', 'warning');
-                    return;
-                }
-
-                const choice = confirm(`从云端检测到 ${imported.length} 条记录。\n点击「确定」合并到本地\n点击「取消」覆盖本地数据`);
-                if (!choice) {
-                    historyRecords = imported;
-                } else {
-                    const existingSet = new Set(historyRecords.map(r => JSON.stringify(r)));
-                    let addedCount = 0;
-                    imported.forEach(r => {
-                        const key = JSON.stringify(r);
-                        if (!existingSet.has(key)) {
-                            historyRecords.push(r);
-                            existingSet.add(key);
-                            addedCount++;
-                        }
-                    });
-                    setStatus(`✅ 合并完成，新增 ${addedCount} 条`, 'success');
-                }
-
-                saveHistoryToStorage();
-                if (document.getElementById('historyModal').classList.contains('active')) {
-                    renderHistoryModal();
-                }
-                showTodaySettlementAlert();
-                setStatus(`✅ 从云端成功加载，当前共 ${historyRecords.length} 条记录`, 'success');
-            } catch (err) {
-                console.error('下载失败:', err);
-                setStatus('❌ 下载失败：' + err.message, 'error');
-            }
-        });
-
-        // ============================================================
         // 初始化
         // ============================================================
         window.addEventListener('DOMContentLoaded', function() {
@@ -3241,13 +3151,6 @@
 
             // 检测URL同步链接
             setTimeout(checkSyncFromURL, 800);
-
-            // 自动填充坚果云配置（如有）
-            const config = loadWebdavConfig();
-            if (config) {
-                document.getElementById('webdavEmail').value = config.email;
-                document.getElementById('webdavPassword').value = config.password;
-            }
         });
     </script>
 </body>
